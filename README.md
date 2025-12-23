@@ -45,22 +45,19 @@ A premium mobile-first web experience featuring a high-quality, draggable 3D Chr
      - On Linux: `ip addr show`
      - On Windows: `ipconfig`
 
-4. **On iOS devices:**
-   - Must tap the "Start Experience" button to grant motion permission
-   - Audio will only play after user interaction (tap Start)
-
-5. **On desktop:**
-   - Press 'S' key to simulate shake and trigger celebration
+4. **The Christmas tree will appear immediately** - no setup required!
+   - Drag to rotate
+   - Pinch to zoom (mobile)
+   - Shake to celebrate (or press 'S' on desktop)
 
 ## 📱 Mobile Permissions
 
 ### iOS (Safari)
-- **Motion Permission**: Required for shake detection. Requested automatically when you tap "Start Experience"
-- **Audio**: Enabled on first user gesture (Start button)
+- **Motion Permission**: Shake detection may not work on iOS without explicit permission. If needed, enable motion access in Safari Settings > Motion & Orientation Access
+- **Audio**: Auto-initialized on page load. Some browsers may require a tap to unmute
 
 ### Android (Chrome)
-- Motion events work without explicit permission
-- Audio context may require user gesture to resume
+- Motion events and audio work automatically without permission
 
 ## 🎮 Controls
 
@@ -69,7 +66,6 @@ A premium mobile-first web experience featuring a high-quality, draggable 3D Chr
 | Rotate tree | Drag/swipe |
 | Zoom | Pinch (mobile) |
 | Celebrate | Shake device / Press 'S' (desktop) |
-| Fallback jingle | Tap "Play Jingle" button (if shake unavailable) |
 
 ## 🎨 Technical Details
 
