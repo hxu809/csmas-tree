@@ -56,13 +56,6 @@ const state = {
 
 // DOM elements
 const canvas = document.getElementById('canvas');
-const overlay = document.getElementById('overlay');
-const hud = document.getElementById('hud');
-const startBtn = document.getElementById('startBtn');
-const fallbackBtn = document.getElementById('fallbackBtn');
-const motionStatus = document.getElementById('motionStatus');
-const audioStatus = document.getElementById('audioStatus');
-const shakeToast = document.getElementById('shakeToast');
 
 // ============================================================================
 // THREE.JS SCENE SETUP
@@ -647,9 +640,6 @@ function triggerShakeCelebration() {
     state.shakeCooldown = true;
     state.lastShakeTime = Date.now();
 
-    // Show toast
-    showShakeToast();
-
     // Play jingle
     playJingle();
 
@@ -660,13 +650,6 @@ function triggerShakeCelebration() {
     setTimeout(() => {
         state.shakeCooldown = false;
     }, 2000);
-}
-
-function showShakeToast() {
-    shakeToast.classList.add('show');
-    setTimeout(() => {
-        shakeToast.classList.remove('show');
-    }, 1500);
 }
 
 // ============================================================================
@@ -930,79 +913,30 @@ function onWindowResize() {
 // PERMISSION & INITIALIZATION
 // ============================================================================
 
-async function requestMotionPermission() {
-    // Check if permission API exists (iOS 13+)
-    if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
-        try {
-            const permission = await DeviceMotionEvent.requestPermission();
-            if (permission === 'granted') {
-                state.motionEnabled = true;
-                motionStatus.textContent = 'Enabled';
-                motionStatus.style.color = '#4ade80';
-                window.addEventListener('devicemotion', onDeviceMotion);
-                fallbackBtn.classList.add('hidden');
-                return true;
-            } else {
-                state.motionEnabled = false;
-                motionStatus.textContent = 'Denied';
-                motionStatus.style.color = '#ff6b6b';
-                fallbackBtn.classList.remove('hidden');
-                return false;
-            }
-        } catch (error) {
-            console.error('Motion permission error:', error);
-            state.motionEnabled = false;
-            motionStatus.textContent = 'Error';
-            motionStatus.style.color = '#ff6b6b';
-            fallbackBtn.classList.remove('hidden');
-            return false;
-        }
-    } else if (typeof DeviceMotionEvent !== 'undefined') {
-        // Android or older browsers - no permission needed
+function setupMotionDetection() {
+    // Auto-enable motion without iOS permission (will be requested on first interaction if needed)
+    if (typeof DeviceMotionEvent !== 'undefined') {
         state.motionEnabled = true;
-        motionStatus.textContent = 'Enabled';
-        motionStatus.style.color = '#4ade80';
         window.addEventListener('devicemotion', onDeviceMotion);
-        fallbackBtn.classList.add('hidden');
-        return true;
-    } else {
-        // Motion not supported
-        state.motionEnabled = false;
-        motionStatus.textContent = 'Not Available';
-        motionStatus.style.color = '#ffa500';
-        fallbackBtn.classList.remove('hidden');
-        return false;
     }
 }
 
 function initAudioContext() {
     try {
         state.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-        // Resume if suspended (autoplay restriction)
-        if (state.audioContext.state === 'suspended') {
-            state.audioContext.resume();
-        }
-
-        audioStatus.textContent = 'Ready';
-        audioStatus.style.color = '#4ade80';
         return true;
     } catch (error) {
         console.error('Audio context error:', error);
-        audioStatus.textContent = 'Failed';
-        audioStatus.style.color = '#ff6b6b';
         return false;
     }
 }
 
-async function onStartClick() {
-    // Request permissions
-    await requestMotionPermission();
-    initAudioContext();
+function init() {
+    // Setup motion detection
+    setupMotionDetection();
 
-    // Hide overlay, show HUD
-    overlay.classList.add('hidden');
-    hud.classList.remove('hidden');
+    // Initialize audio context
+    initAudioContext();
 
     // Start animation loop
     animate();
@@ -1011,11 +945,6 @@ async function onStartClick() {
 // ============================================================================
 // EVENT LISTENERS
 // ============================================================================
-
-startBtn.addEventListener('click', onStartClick);
-fallbackBtn.addEventListener('click', () => {
-    triggerShakeCelebration();
-});
 
 // Pointer events for drag
 canvas.addEventListener('pointerdown', onPointerDown);
@@ -1047,3 +976,4 @@ window.addEventListener('resize', onWindowResize);
 // ============================================================================
 
 initScene();
+init();

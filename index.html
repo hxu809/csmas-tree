@@ -9,39 +9,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Loading overlay -->
-    <div id="overlay" class="overlay">
-        <div class="card">
-            <h1>🎄 Christmas Tree</h1>
-            <div class="instructions">
-                <p><strong>How to interact:</strong></p>
-                <ul>
-                    <li>👆 Drag to rotate</li>
-                    <li>🤏 Pinch to zoom</li>
-                    <li>📱 Shake to celebrate!</li>
-                </ul>
-            </div>
-            <button id="startBtn" class="primary-btn">Start Experience</button>
-            <p class="small-text">This will request motion & audio permission</p>
-        </div>
-    </div>
-
-    <!-- HUD (hidden initially) -->
-    <div id="hud" class="hud hidden">
-        <div class="hud-item">
-            <span>Motion:</span>
-            <span id="motionStatus">Checking...</span>
-        </div>
-        <div class="hud-item">
-            <span>Audio:</span>
-            <span id="audioStatus">Ready</span>
-        </div>
-        <button id="fallbackBtn" class="fallback-btn hidden">🎵 Play Jingle</button>
-    </div>
-
-    <!-- Shake notification toast -->
-    <div id="shakeToast" class="toast hidden">🎉 Shake detected!</div>
-
     <!-- Canvas -->
     <canvas id="canvas"></canvas>
 
