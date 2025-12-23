@@ -56,6 +56,7 @@ const state = {
 
 // DOM elements
 const canvas = document.getElementById('canvas');
+const shakeToast = document.getElementById('shakeToast');
 
 // ============================================================================
 // THREE.JS SCENE SETUP
@@ -640,6 +641,9 @@ function triggerShakeCelebration() {
     state.shakeCooldown = true;
     state.lastShakeTime = Date.now();
 
+    // Show toast
+    showShakeToast();
+
     // Play jingle
     playJingle();
 
@@ -649,6 +653,13 @@ function triggerShakeCelebration() {
     // Cooldown
     setTimeout(() => {
         state.shakeCooldown = false;
+    }, 2000);
+}
+
+function showShakeToast() {
+    shakeToast.classList.add('show');
+    setTimeout(() => {
+        shakeToast.classList.remove('show');
     }, 2000);
 }
 
